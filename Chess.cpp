@@ -1,6 +1,10 @@
 #include <graphics.h>
 #include <conio.h>
 #include "Chess.h"
+Chess::Chess()
+{
+    x = 0, y = 0;
+}
 void Chess::showSpot()
 {
     switch (state)

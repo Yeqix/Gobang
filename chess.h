@@ -6,6 +6,7 @@
 class Chess : public Point
 {
 public:
+    Chess();
     int state; // 当前棋子状态
     void showSpot();
 };

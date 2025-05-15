@@ -3,6 +3,7 @@
 class Point
 {
 public:
+    Point();
     void setXY(int, int);
     virtual void showPoint() = 0;
 
