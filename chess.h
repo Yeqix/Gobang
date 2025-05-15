@@ -1,14 +1,12 @@
+#include <graphics.h>
+#include <conio.h>
+#include "Point.h"
 #ifndef CHESS_H
 #define CHESS_H
-class chess
+class Chess : public Point
 {
 public:
-    chess();
-    chess(int, int);
-    void setX(int);
-    void setY(int);
-
-private:
-    int x;
-    int y;
-}
+    int state; // 当前棋子状态
+    void showSpot();
+};
+#endif
