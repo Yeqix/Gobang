@@ -1,13 +1,14 @@
 #include <graphics.h>
 #include <conio.h>
-#include "chess.h"
+#include <vector>
+#include "Chess.h"
 
 #ifndef BOARD_H
 #define BOARD_H
 class Board
 {
 public:
-    Chess chess[20][20];
+    std::vector<std::vector<Chess>> chess;
     Board *next;
     Board();
     void setBoard();          // 画棋盘

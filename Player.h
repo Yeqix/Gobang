@@ -8,7 +8,6 @@ class Player
 public:
     int num;
     int foot;
-    static Player null, play1, play2;
     MOUSEMSG Get();
 };
 #endif

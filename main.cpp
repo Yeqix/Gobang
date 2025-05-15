@@ -1,12 +1,8 @@
 #include <graphics.h>
 #include <conio.h>
-#include <Game.h>
+#include "Game.h"
 using namespace std;
-IMAGE BACKGROUND;
-void PutBackGround()
-{
-    putimage(0, 0, 1080, 1080, &BACKGROUND, 0, 0);
-}
+
 int main()
 {
     initgraph(1080, 1080); // 创建窗口像素点

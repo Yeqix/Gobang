@@ -5,8 +5,8 @@
 
 Game::Game()
 {
-    playerone.num = play1;
-    playertwo.num = play2;
+    playerone.num = 1;
+    playertwo.num = 2;
 }
 void Game::loadImage()
 {
@@ -32,7 +32,7 @@ bool Game::exam(Board *a)
     {
         for (int j = 0; j < 20; j++)
         {
-            if (a->chess[i][j].state != NULL)
+            if (a->chess[i][j].state != -1)
             {
                 if (i != 0 && i != 1 && i != 18 && i != 19)
                 {
@@ -69,11 +69,11 @@ int Game::Game_()
 {
     playerone.foot = 0;
     playertwo.foot = 0;
-    playerone.num = play1;
-    playertwo.num = play2;
+    playerone.num = 1;
+    playertwo.num = 2;
     boardH = p = q = r = new Board;
     p->setBoard();
-    outtextxy(660, 90, L"五子棋");
+    outtextxy(660, 90, L"Hello World");
     boardH->next = p->next = q->next = NULL;
     Player player;
     player.num = playerone.num;
@@ -89,13 +89,13 @@ int Game::Game_()
         {
         a:
             msg = playerone.Get();
-            x = m1.x / 30;
-            y = m1.y / 30;
-            if (m1.uMsg == WM_RBUTTONDOWN)
+            x = msg.x / 30;
+            y = msg.y / 30;
+            if (msg.uMsg == WM_RBUTTONDOWN)
             {
                 goto c;
             }
-            if (p->chess[x][y].state != null)
+            if (p->chess[x][y].state != -1)
                 goto a;
             playerone.foot++;
             p->chess[x][y].state = playerone.num;
@@ -106,13 +106,13 @@ int Game::Game_()
         {
         b:
             msg = playertwo.Get();
-            x = m1.x / 30;
-            y = m1.y / 30;
-            if (m1.uMsg == WM_RBUTTONDOWN)
+            x = msg.x / 30;
+            y = msg.y / 30;
+            if (msg.uMsg == WM_RBUTTONDOWN)
             {
                 goto c;
             }
-            if (p->chess[x][y].state != null)
+            if (p->chess[x][y].state != -1)
                 goto b;
             playertwo.foot++;
             p->chess[x][y].state = playertwo.num;
