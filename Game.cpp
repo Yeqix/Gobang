@@ -73,8 +73,8 @@ int Game::Game_()
     playertwo.num = 2;
     boardH = p = q = r = new Board;
     p->setBoard();
-    outtextxy(660, 90, L"Hello World");
-    boardH->next = p->next = q->next = NULL;
+    outtextxy(660, 90, L"五子棋");
+    boardH->next = p->next = q->next = nullptr;
     Player player;
     player.num = playerone.num;
     while (true)
@@ -84,7 +84,7 @@ int Game::Game_()
     c:
         *p = *q;
         q->next = p;
-        p->next = NULL;
+        p->next = nullptr;
         if (player.num == playerone.num)
         {
         a:

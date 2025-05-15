@@ -5,7 +5,10 @@ class Point
 public:
     Point();
     void setXY(int, int);
-    virtual void showPoint() = 0;
+    virtual void showPoint()
+    {
+        return;
+    }
 
 protected:
     int x;

@@ -26,7 +26,6 @@ void Board::setChess()
         for (int j = 0; j < 20; j++)
         {
             chess[i][j].setXY(i, j);
-            chess[i][j].state = -1;
         }
     }
 }

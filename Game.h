@@ -22,4 +22,4 @@ protected:
     int y;
     MOUSEMSG msg;
 };
-#endif // !GAME_H
+#endif
