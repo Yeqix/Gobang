@@ -5,7 +5,7 @@ using namespace std;
 
 int main()
 {
-    initgraph(1080, 1080); // 创建窗口像素点
+    initgraph(800, 800); // 创建窗口像素点
     Game game;
     // game.loadImage();
     game.startGame();

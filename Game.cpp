@@ -73,7 +73,7 @@ int Game::Game_()
     playertwo.num = 2;
     boardH = p = q = r = new Board;
     p->setBoard();
-    outtextxy(660, 90, L"五子棋");
+    outtextxy(660, 90, (LPTSTR) "Gobang");
     boardH->next = p->next = q->next = nullptr;
     Player player;
     player.num = playerone.num;
@@ -127,11 +127,11 @@ int Game::Game_()
         {
             if (winer == playerone.num)
             {
-                outtextxy(100, 100, L"BLACK IS WINER");
+                outtextxy(100, 100, (LPTSTR) "BLACK IS WINER");
             }
             else
             {
-                outtextxy(100, 100, L"WHITE IS WINER");
+                outtextxy(100, 100, (LPTSTR) "WHITE IS WINER");
             }
             Sleep(3000);
             return 0;
