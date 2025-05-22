@@ -1,15 +1,13 @@
-#include <graphics.h>
-#include <conio.h>
 #include "Game.h"
+#include <conio.h>
+#include <graphics.h>
 #include "Player.h"
 
-Game::Game()
-{
+Game::Game() {
     playerone.num = 1;
     playertwo.num = 2;
 }
-void Game::loadImage()
-{
+void Game::loadImage() {
     IMAGE BACKGROUND;
     loadimage(&BACKGROUND, _T("Source//background.jpg"));
     putimage(0, 0, 1080, 1080, &BACKGROUND, 0, 0);
@@ -17,45 +15,36 @@ void Game::loadImage()
     // 间隔像素85
 }
 
-void Game::startGame()
-{
-    setbkmode(TRANSPARENT); // 设置字符背景透明
-    settextcolor(BLACK);    // 设置文本颜色
-    while (1)
-    {
+void Game::startGame() {
+    setbkmode(TRANSPARENT);  // 设置字符背景透明
+    settextcolor(BLACK);     // 设置文本颜色
+    while (1) {
         Game_();
     }
 }
-bool Game::exam(Board *a)
-{
-    for (int i = 0; i < 20; i++)
-    {
-        for (int j = 0; j < 20; j++)
-        {
-            if (a->chess[i][j].state != -1)
-            {
-                if (i != 0 && i != 1 && i != 18 && i != 19)
-                {
-                    if (a->chess[i][j].state == a->chess[i - 1][j].state && a->chess[i][j].state == a->chess[i - 2][j].state && a->chess[i][j].state == a->chess[i + 1][j].state && a->chess[i][j].state == a->chess[i + 2][j].state)
-                    {
+bool Game::exam(Board* a) {
+    for (int i = 0; i < 20; i++) {
+        for (int j = 0; j < 20; j++) {
+            if (a->chess[i][j].state != -1) {
+                if (i != 0 && i != 1 && i != 18 && i != 19) {
+                    if (a->chess[i][j].state == a->chess[i - 1][j].state && a->chess[i][j].state == a->chess[i - 2][j].state &&
+                        a->chess[i][j].state == a->chess[i + 1][j].state && a->chess[i][j].state == a->chess[i + 2][j].state) {
                         winer = a->chess[i][j].state;
                         return true;
                     }
                 }
-                if (j != 0 && j != 1 && j != 18 && j != 19)
-                {
-                    if (a->chess[i][j].state == a->chess[i][j - 1].state && a->chess[i][j].state == a->chess[i][j - 2].state && a->chess[i][j].state == a->chess[i][j + 1].state && a->chess[i][j].state == a->chess[i][j + 2].state)
-                    {
+                if (j != 0 && j != 1 && j != 18 && j != 19) {
+                    if (a->chess[i][j].state == a->chess[i][j - 1].state && a->chess[i][j].state == a->chess[i][j - 2].state &&
+                        a->chess[i][j].state == a->chess[i][j + 1].state && a->chess[i][j].state == a->chess[i][j + 2].state) {
                         winer = a->chess[i][j].state;
                         return true;
                     }
                 }
-                if (j != 0 && j != 1 && j != 18 && j != 19 && i != 0 && i != 1 && i != 18 && i != 19)
-                {
-                    if (
-                        (a->chess[i][j].state == a->chess[i - 1][j - 1].state && a->chess[i][j].state == a->chess[i - 2][j - 2].state && a->chess[i][j].state == a->chess[i + 1][j + 1].state && a->chess[i][j].state == a->chess[i + 2][j + 2].state) ||
-                        (a->chess[i][j].state == a->chess[i + 1][j - 1].state && a->chess[i][j].state == a->chess[i + 2][j - 2].state && a->chess[i][j].state == a->chess[i - 1][j + 1].state && a->chess[i][j].state == a->chess[i - 2][j + 2].state))
-                    {
+                if (j != 0 && j != 1 && j != 18 && j != 19 && i != 0 && i != 1 && i != 18 && i != 19) {
+                    if ((a->chess[i][j].state == a->chess[i - 1][j - 1].state && a->chess[i][j].state == a->chess[i - 2][j - 2].state &&
+                         a->chess[i][j].state == a->chess[i + 1][j + 1].state && a->chess[i][j].state == a->chess[i + 2][j + 2].state) ||
+                        (a->chess[i][j].state == a->chess[i + 1][j - 1].state && a->chess[i][j].state == a->chess[i + 2][j - 2].state &&
+                         a->chess[i][j].state == a->chess[i - 1][j + 1].state && a->chess[i][j].state == a->chess[i - 2][j + 2].state)) {
                         winer = a->chess[i][j].state;
                         return true;
                     }
@@ -65,51 +54,44 @@ bool Game::exam(Board *a)
     }
     return false;
 }
-int Game::Game_()
-{
+int Game::Game_() {
     playerone.foot = 0;
     playertwo.foot = 0;
     playerone.num = 1;
     playertwo.num = 2;
-    boardH = p = q = r = new Board;
-    p->setBoard();
+    p = new Board;
+    p->setBoard();  // 初始化棋盘
     outtextxy(660, 90, (LPTSTR) "Gobang");
-    boardH->next = p->next = q->next = nullptr;
-    Player player;
-    player.num = playerone.num;
-    while (true)
-    {
-        q = p;
-        p = new Board;
+    Player player;               // 当前进行操作的玩家
+    player.num = playerone.num;  // 初始化黑棋先行
+    while (true) {
     c:
-        *p = *q;
-        q->next = p;
-        p->next = nullptr;
-        if (player.num == playerone.num)
-        {
+        if (player.num == playerone.num) {
         a:
             msg = playerone.Get();
+            if (msg.x > 600 || msg.y > 600) {  // 若坐标不在棋盘内，重新获取鼠标消息
+                goto a;
+            }
             x = msg.x / 30;
             y = msg.y / 30;
-            if (msg.uMsg == WM_RBUTTONDOWN)
-            {
+            if (msg.uMsg == WM_RBUTTONDOWN) {
                 goto c;
             }
-            if (p->chess[x][y].state != -1)
+            if (p->chess[x][y].state != -1)  // 若该坐标已经有棋子，重新获取鼠标信息
                 goto a;
             playerone.foot++;
-            p->chess[x][y].state = playerone.num;
-            p->showBoard(x, y);
-            player.num = playertwo.num;
-        }
-        else if (player.num == playertwo.num)
-        {
+            p->chess[x][y].state = playerone.num;  // 将棋子状态设置
+            p->showBoard(x, y);                    // 执行修改
+            player.num = playertwo.num;            // 更换当前行动玩家
+        } else if (player.num == playertwo.num) {  // 与上类似
         b:
             msg = playertwo.Get();
+            if (msg.x > 600 || msg.y > 600) {
+                goto a;
+            }
             x = msg.x / 30;
             y = msg.y / 30;
-            if (msg.uMsg == WM_RBUTTONDOWN)
-            {
+            if (msg.uMsg == WM_RBUTTONDOWN) {
                 goto c;
             }
             if (p->chess[x][y].state != -1)
@@ -119,21 +101,13 @@ int Game::Game_()
             p->showBoard(x, y);
             player.num = playerone.num;
         }
-
-        else
-        {
-        }
-        if (exam(p) == true)
-        {
-            if (winer == playerone.num)
-            {
-                outtextxy(100, 100, (LPTSTR) "BLACK IS WINER");
-            }
-            else
-            {
+        if (exam(p) == true) {  // 说明此时已经有人胜利进行终止
+            if (winer == playerone.num) {
+                outtextxy(100, 100, (LPTSTR) "BLACK IS WINER");  //(LPTSTR)为强制转换，输出胜利信息
+            } else {
                 outtextxy(100, 100, (LPTSTR) "WHITE IS WINER");
             }
-            Sleep(3000);
+            Sleep(3000);  // 将胜利暂停一段时间再重开下一局
             return 0;
         }
     }

@@ -1,16 +1,12 @@
 #ifndef POINT_H
 #define POINT_H
-class Point
-{
-public:
+class Point {
+   public:
     Point();
     void setXY(int, int);
-    virtual void showPoint()
-    {
-        return;
-    }
+    virtual void showPoint() { return; }
 
-protected:
+   protected:
     int x;
     int y;
 };
