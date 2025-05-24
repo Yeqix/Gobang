@@ -38,7 +38,7 @@ void putimagePNG(int x, int y, IMAGE* picture) //È¥³ýÆå×ÓÖÜÎ§ºÚ±ß
 	}
 }
 void Chess::init() {
-	loadimage(0, "res/ÆåÅÌ2.jpg");
+	
 	mciSendString("play res/start.wav", 0, 0, 0);
 	loadimage(&black, "res/black.png", chess_size, chess_size, 1);
 	loadimage(&white, "res/white.png", chess_size, chess_size, 1);
@@ -52,7 +52,7 @@ void Chess::init() {
 	is_black = true;
 }
 
-Chess::Chess(int board_size, int top, int left, int chess_size)
+void Chess::set_information(int board_size, int top, int left, double chess_size)
 {
 	this->board_size = board_size;
 	this->top = top;

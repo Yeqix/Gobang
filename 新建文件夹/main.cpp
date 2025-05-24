@@ -7,10 +7,18 @@
  #include "Game.h"
 using namespace std;
 signed main() {
-	Chess chess(13, 44, 44, 67);//几路棋盘，左，右侧边框宽度，每个格子宽度
+     initgraph(897, 895);
+	 Chess chess;
      Man man ,man2;
      AI ai ;
      Game game(&man,&ai,&chess,&man2) ;
+     while (1) {
      game.startGame() ;
+     if (game.end_game()) {
+         break; 
+     }
+     }
+
+     
     return 0;
 }

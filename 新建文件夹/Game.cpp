@@ -4,7 +4,6 @@
 #include<iostream>
 #include <mmsystem.h>
 #pragma comment(lib, "winmm.lib")
-
 Game::Game(Man* man, AI* ai, Chess* chess, Man* man2)
 {
 	this->man = man;
@@ -14,8 +13,10 @@ Game::Game(Man* man, AI* ai, Chess* chess, Man* man2)
 }
 void Game::startGame()
 {
-	initgraph(897, 895);
-	mode = chose_mode();
+	
+	mode = chose_mode();//选择模式
+
+
 	if (mode) {//人机
 	     chose_color();//选择颜色
 	}
@@ -23,6 +24,7 @@ void Game::startGame()
 		man->init(chess, 1);
 		man2->init(chess, 0);
 	}
+		chose_board();//选择棋盘
 	chess->init();//初始化棋盘，棋子
 	int turn = 1;//1代表黑方，0代表白方
 	while (1)
@@ -54,14 +56,45 @@ int Game::chose_mode()
 	MOUSEMSG msg;
 	while (1) {
 		msg = GetMouseMsg();
-		if (msg.uMsg == WM_LBUTTONDOWN) {//鼠标左键按下
-			std::cout << msg.x << " " << msg.y << '\n';
+		if (msg.uMsg == WM_LBUTTONDOWN) {//鼠标左键按下 
 			mciSendString("play res/点击音效.mp3", 0, 0, 0);
 			if (msg.x >= 56 && msg.x <= 395 && msg.y >= 740 && msg.y <= 846) {
 				return 1;//人机
 			}
 			else if (msg.x >= 506 && msg.x <= 847 && msg.y >= 740 && msg.y <= 846) {
 				return 0;//人人
+			}
+		}
+	}
+	cleardevice();//清屏
+}
+void Game::chose_board()
+{
+	IMAGE img;
+	loadimage(&img, _T("res/选棋盘.png"), 897, 895);
+	putimage(0, 0, &img);
+	MOUSEMSG msg;
+	while (1) {
+		msg = GetMouseMsg();
+		if (msg.uMsg == WM_LBUTTONDOWN) {//鼠标左键按下
+			mciSendString("play res/点击音效.mp3", 0, 0, 0);
+			if (msg.x >= 82 && msg.x <= 399 && msg.y >= 664 && msg.y <= 794) {
+				cleardevice();
+				chess->set_information(13, 44, 44, 67);
+				IMAGE img;
+				loadimage(&img, _T("res/13路.jpg"), 897, 895);
+				putimage(0, 0, &img);
+				return;
+			}
+			else if (msg.x >= 496 && msg.x <= 814 && msg.y >= 660 && msg.y <= 794) {
+				cleardevice();
+
+				chess->set_information(19, 27, 30, 46.5);
+
+				IMAGE img;
+				loadimage(&img, _T("res/19路.jpg"), 897, 895);
+				putimage(0, 0, &img);
+				return ;
 			}
 		}
 	}
@@ -114,5 +147,26 @@ void Game::show_winner()
 	}
 	Sleep(1000);
 	return;
+}
+
+bool Game::end_game()
+{
+	cleardevice();
+	MOUSEMSG msg;
+	IMAGE img;
+	loadimage(&img, _T("res/是否重开.png"), 897, 895);
+	putimage(0, 0, &img);
+	while (1) {
+		msg = GetMouseMsg();
+		if (msg.uMsg == WM_LBUTTONDOWN) {//鼠标左键按下
+			mciSendString("play res/点击音效.mp3", 0, 0, 0);
+			if (msg.x >= 108 && msg.x <= 371 && msg.y >= 467 && msg.y <= 679) {
+				return 1;
+			}
+			else if (msg.x >= 518 && msg.x <= 786 && msg.y >= 467 && msg.y <= 680) {
+				return 0;
+			}
+		}
+	}
 }
 

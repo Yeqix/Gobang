@@ -4,14 +4,14 @@
 class Chess :public Point
 {
     int board[19][19];
-    int top, left;// 棋盘的边界(留白部分)
-	int chess_size ,board_size;
+	int top, left, board_size;// 棋盘的边界(留白部分)，棋盘大小
+	double chess_size;
 	bool is_black;// 是否是到黑
 	int win;//1为黑胜，-1为平
     IMAGE black, white;// 棋子的图片
 public:
-    Chess(int board_size,int top, int left, int chess_size);
 	void init();
+    void set_information(int board_size,int top, int left, double chess_size);
 	void chessDown(int x, int y, int color);// 下棋
 	bool isvaild(int x, int y, int* down_x, int* down_y);// 判断是否可以下棋
 	int boardsize();// 返回棋盘大小

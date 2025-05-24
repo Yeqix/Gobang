@@ -95,7 +95,7 @@ void AI::setScore()
 						score[i][j] += 30;
 					}
 					else if (count1 + count2 == 0 && have_other_chess + have_other_chess2 == 0) {
-						score[i][j] += 6*(-abs((chess->boardsize())/2-i)-abs((chess->boardsize() ) / 2 - j)) ;//中心越近分数越高
+						score[i][j] += 20*(-abs((chess->boardsize())/2-i)-abs((chess->boardsize() ) / 2 - j)) ;//中心越近分数越高
 					}
 					else if (count1 + count2 == 0 && have_other_chess + have_other_chess2 == 1) {
 						score[i][j] += -1;

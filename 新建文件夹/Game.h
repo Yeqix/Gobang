@@ -13,6 +13,8 @@ public:
     void init();  
     void startGame();
 	int chose_mode();
+    void chose_board();
 	void chose_color();
     void show_winner();
+    bool end_game();
 };
