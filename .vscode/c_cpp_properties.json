@@ -6,9 +6,7 @@
                 "${workspaceFolder}/**"
             ],
             "defines": [
-                "_DEBUG",
-                "UNICODE",
-                "_UNICODE"
+                "_DEBUG"
             ],
             "windowsSdkVersion": "10.0.22621.0",
             "compilerPath": "C:/TDM-GCC-64/bin/g++.exe",

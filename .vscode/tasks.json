@@ -8,16 +8,17 @@
                 "-fdiagnostics-color=always",
                 "-g",
                 "${file}",
-                "${cwd}/Game.cpp",
+                "${cwd}/AI.cpp",
                 "${cwd}/Chess.cpp",
-                "${cwd}/Board.cpp",
-                "${cwd}/Player.cpp",
+                "${cwd}/Game.cpp",
+                "${cwd}/Man.cpp",
                 "${cwd}/Point.cpp",
                 "-o",
                 "${fileDirname}\\${fileBasenameNoExtension}.exe",
                 "-L",
                 "C:\\TDM-GCC-64\\lib",
-                "-leasyx"
+                "-leasyx",
+                "-lwinmm"
             ],
             "options": {
                 "cwd": "${fileDirname}"

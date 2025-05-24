@@ -1,13 +1,24 @@
 #include <conio.h>
 #include <graphics.h>
 #include "Point.h"
-
 #ifndef CHESS_H
 #define CHESS_H
 class Chess : public Point {
+    int board[19][19];
+    int top, left, board_size;  // ÆåÅÌµÄ±ß½ç(Áô°×²¿·Ö)£¬ÆåÅÌ´óĞ¡
+    double chess_size;
+    bool is_black;       // ÊÇ·ñÊÇµ½ºÚ
+    int win;             // 1ÎªºÚÊ¤£¬-1ÎªÆ½
+    IMAGE black, white;  // Æå×ÓµÄÍ¼Æ¬
    public:
-    int state;  // å½“å‰æ£‹å­çŠ¶æ€(è¢«è°å ç”¨) å…¶ä¸­-1è¡¨ç¤ºæœªè¢«ä»»ä½•ç©å®¶å ç”¨
-    Chess();
-    void showSpot();  // ç”»æ£‹å­
+    void init();
+    void set_information(int board_size, int top, int left, double chess_size);
+    void chessDown(int x, int y, int color);               // ÏÂÆå
+    bool isvaild(int x, int y, int* down_x, int* down_y);  // ÅĞ¶ÏÊÇ·ñ¿ÉÒÔÏÂÆå
+    int boardsize();                                       // ·µ»ØÆåÅÌ´óĞ¡
+    int getColor(int x, int y);                            // ·µ»ØÆå×ÓÑÕÉ«
+    bool gameover(int color);                              // ·µ»Ø½á¹û
+    void set_win(int winner);                              // ÉèÖÃÊ¤ÀûÕß
+    int get_win();
 };
 #endif

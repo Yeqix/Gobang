@@ -1,115 +1,155 @@
 #include "Game.h"
-#include <conio.h>
-#include <graphics.h>
-#include "Player.h"
-
-Game::Game() {
-    playerone.num = 1;
-    playertwo.num = 2;
+#include <mmsystem.h>
+#include <windows.h>
+#include <iostream>
+#include "AI.h"
+#include "Chess.h"
+#pragma comment(lib, "winmm.lib")
+Game::Game(Man* man, AI* ai, Chess* chess, Man* man2) {
+    this->man = man;
+    this->ai = ai;
+    this->chess = chess;
+    this->man2 = man2;
 }
-void Game::loadImage() {
-    IMAGE BACKGROUND;
-    loadimage(&BACKGROUND, _T("Source//background.jpg"));
-    putimage(0, 0, 1080, 1080, &BACKGROUND, 0, 0);
-    // åˆå§‹ä½ç½®50,50
-    // é—´éš”åƒç´ 85
-}
-
 void Game::startGame() {
-    setbkmode(TRANSPARENT);  // è®¾ç½®å­—ç¬¦èƒŒæ™¯é€æ˜
-    settextcolor(BLACK);     // è®¾ç½®æ–‡æœ¬é¢œè‰²
+    mode = chose_mode();  // Ñ¡ÔñÄ£Ê½
+    std::cout << mode << "\n";
+    if (mode) {         // ÈË»ú
+        chose_color();  // Ñ¡ÔñÑÕÉ«
+    } else {
+        man->init(chess, 1);
+        man2->init(chess, 0);
+    }
+    chose_board();  // Ñ¡ÔñÆåÅÌ
+    chess->init();  // ³õÊ¼»¯ÆåÅÌ£¬Æå×Ó
+    int turn = 1;   // 1´ú±íºÚ·½£¬0´ú±í°×·½
     while (1) {
-        Game_();
-    }
-}
-bool Game::exam(Board* a) {
-    for (int i = 0; i < 20; i++) {
-        for (int j = 0; j < 20; j++) {
-            if (a->chess[i][j].state != -1) {
-                if (i != 0 && i != 1 && i != 18 && i != 19) {
-                    if (a->chess[i][j].state == a->chess[i - 1][j].state && a->chess[i][j].state == a->chess[i - 2][j].state &&
-                        a->chess[i][j].state == a->chess[i + 1][j].state && a->chess[i][j].state == a->chess[i + 2][j].state) {
-                        winer = a->chess[i][j].state;
-                        return true;
-                    }
-                }
-                if (j != 0 && j != 1 && j != 18 && j != 19) {
-                    if (a->chess[i][j].state == a->chess[i][j - 1].state && a->chess[i][j].state == a->chess[i][j - 2].state &&
-                        a->chess[i][j].state == a->chess[i][j + 1].state && a->chess[i][j].state == a->chess[i][j + 2].state) {
-                        winer = a->chess[i][j].state;
-                        return true;
-                    }
-                }
-                if (j != 0 && j != 1 && j != 18 && j != 19 && i != 0 && i != 1 && i != 18 && i != 19) {
-                    if ((a->chess[i][j].state == a->chess[i - 1][j - 1].state && a->chess[i][j].state == a->chess[i - 2][j - 2].state &&
-                         a->chess[i][j].state == a->chess[i + 1][j + 1].state && a->chess[i][j].state == a->chess[i + 2][j + 2].state) ||
-                        (a->chess[i][j].state == a->chess[i + 1][j - 1].state && a->chess[i][j].state == a->chess[i + 2][j - 2].state &&
-                         a->chess[i][j].state == a->chess[i - 1][j + 1].state && a->chess[i][j].state == a->chess[i - 2][j + 2].state)) {
-                        winer = a->chess[i][j].state;
-                        return true;
-                    }
-                }
-            }
-        }
-    }
-    return false;
-}
-int Game::Game_() {
-    playerone.foot = 0;
-    playertwo.foot = 0;
-    playerone.num = 1;
-    playertwo.num = 2;
-    p = new Board;
-    p->setBoard();  // åˆå§‹åŒ–æ£‹ç›˜
-    outtextxy(660, 90, (LPTSTR) "Gobang");
-    Player player;               // å½“å‰è¿›è¡Œæ“ä½œçš„ç©å®¶
-    player.num = playerone.num;  // åˆå§‹åŒ–é»‘æ£‹å…ˆè¡Œ
-    while (true) {
-    c:
-        if (player.num == playerone.num) {
-        a:
-            msg = playerone.Get();
-            if (msg.x > 600 || msg.y > 600) {  // è‹¥åæ ‡ä¸åœ¨æ£‹ç›˜å†…ï¼Œé‡æ–°è·å–é¼ æ ‡æ¶ˆæ¯
-                goto a;
-            }
-            x = msg.x / 30;
-            y = msg.y / 30;
-            if (msg.uMsg == WM_RBUTTONDOWN) {
-                goto c;
-            }
-            if (p->chess[x][y].state != -1)  // è‹¥è¯¥åæ ‡å·²ç»æœ‰æ£‹å­ï¼Œé‡æ–°è·å–é¼ æ ‡ä¿¡æ¯
-                goto a;
-            playerone.foot++;
-            p->chess[x][y].state = playerone.num;  // å°†æ£‹å­çŠ¶æ€è®¾ç½®
-            p->showBoard(x, y);                    // æ‰§è¡Œä¿®æ”¹
-            player.num = playertwo.num;            // æ›´æ¢å½“å‰è¡ŒåŠ¨ç©å®¶
-        } else if (player.num == playertwo.num) {  // ä¸ä¸Šç±»ä¼¼
-        b:
-            msg = playertwo.Get();
-            if (msg.x > 600 || msg.y > 600) {
-                goto a;
-            }
-            x = msg.x / 30;
-            y = msg.y / 30;
-            if (msg.uMsg == WM_RBUTTONDOWN) {
-                goto c;
-            }
-            if (p->chess[x][y].state != -1)
-                goto b;
-            playertwo.foot++;
-            p->chess[x][y].state = playertwo.num;
-            p->showBoard(x, y);
-            player.num = playerone.num;
-        }
-        if (exam(p) == true) {  // è¯´æ˜æ­¤æ—¶å·²ç»æœ‰äººèƒœåˆ©è¿›è¡Œç»ˆæ­¢
-            if (winer == playerone.num) {
-                outtextxy(100, 100, (LPTSTR) "BLACK IS WINER");  //(LPTSTR)ä¸ºå¼ºåˆ¶è½¬æ¢ï¼Œè¾“å‡ºèƒœåˆ©ä¿¡æ¯
+        if (man->get_color() == turn) {
+            man->go();
+        } else {
+            if (mode == 1) {
+                Sleep(1000);
+                ai->go();
             } else {
-                outtextxy(100, 100, (LPTSTR) "WHITE IS WINER");
+                man2->go();
             }
-            Sleep(3000);  // å°†èƒœåˆ©æš‚åœä¸€æ®µæ—¶é—´å†é‡å¼€ä¸‹ä¸€å±€
-            return 0;
+        }
+        if (chess->gameover(turn)) {
+            break;
+        }
+        turn ^= 1;
+    }
+    show_winner();
+    return;
+}
+int Game::chose_mode() {
+    IMAGE img;
+    loadimage(&img, _T("res/Ñ¡Ä£Ê½.jpg"), 897, 895);
+    putimage(0, 0, &img);
+    MOUSEMSG msg;
+    while (1) {
+        msg = GetMouseMsg();
+        if (msg.uMsg == WM_LBUTTONDOWN) {  // Êó±ê×ó¼ü°´ÏÂ
+            mciSendString("play res/µã»÷ÒôĞ§.mp3", 0, 0, 0);
+            if (msg.x >= 56 && msg.x <= 395 && msg.y >= 740 && msg.y <= 846) {
+                cleardevice();  // ÇåÆÁ
+                return 1;       // ÈË»ú
+            } else if (msg.x >= 506 && msg.x <= 847 && msg.y >= 740 && msg.y <= 846) {
+                cleardevice();  // ÇåÆÁ
+                return 0;       // ÈËÈË
+            }
         }
     }
-    return 1;
+    return 0;
+}
+void Game::chose_board() {
+    IMAGE img;
+    loadimage(&img, _T("res/Ñ¡ÆåÅÌ.png"), 897, 895);
+    putimage(0, 0, &img);
+    MOUSEMSG msg;
+    while (1) {
+        msg = GetMouseMsg();
+        if (msg.uMsg == WM_LBUTTONDOWN) {  // Êó±ê×ó¼ü°´ÏÂ
+            mciSendString("play res/µã»÷ÒôĞ§.mp3", 0, 0, 0);
+            if (msg.x >= 82 && msg.x <= 399 && msg.y >= 664 && msg.y <= 794) {
+                cleardevice();
+                chess->set_information(13, 44, 44, 67);
+                IMAGE img;
+                loadimage(&img, _T("res/13Â·.jpg"), 897, 895);
+                putimage(0, 0, &img);
+                return;
+            } else if (msg.x >= 496 && msg.x <= 814 && msg.y >= 660 && msg.y <= 794) {
+                cleardevice();
+
+                chess->set_information(19, 27, 30, 46.5);
+
+                IMAGE img;
+                loadimage(&img, _T("res/19Â·.jpg"), 897, 895);
+                putimage(0, 0, &img);
+                return;
+            }
+        }
+    }
+}
+void Game::chose_color() {
+    IMAGE img;
+    loadimage(&img, _T("res//Ñ¡ºÚ°×.jpg"), 897, 895);
+    putimage(0, 0, &img);
+    MOUSEMSG msg;
+    int x, y;
+    while (1) {
+        msg = GetMouseMsg();
+        if (msg.uMsg == WM_LBUTTONDOWN) {  // Êó±ê×ó¼ü°´ÏÂ
+            mciSendString("play res/µã»÷ÒôĞ§.mp3", 0, 0, 0);
+            if (msg.x >= 210 && msg.x <= 416 && msg.y >= 384 && msg.y <= 523) {  // Ñ¡ºÚ
+                man->init(chess, 1);
+                ai->init(chess, 0);
+                break;
+            } else if (msg.x >= 482 && msg.x <= 689 && msg.y >= 384 && msg.y <= 523) {  // Ñ¡°×
+                ai->init(chess, 1);
+                man->init(chess, 0);
+                break;
+            }
+        }
+    }
+    Sleep(300);     // ÏÔÊ¾µã»÷ÒôĞ§£¨bushi
+    cleardevice();  // ÇåÆÁ
+}
+
+void Game::show_winner() {
+    Sleep(1000);
+    if (chess->get_win() == 1) {
+        IMAGE img;
+        loadimage(&img, _T("res/ºÚÊ¤.png"), 897, 895);
+        putimage(0, 0, &img);
+    } else if (chess->get_win() == 0) {
+        IMAGE img;
+        loadimage(&img, _T("res/°×Ê¤.png"), 897, 895);
+        putimage(0, 0, &img);
+    } else if (chess->get_win() == -1) {
+        IMAGE img;
+        loadimage(&img, _T("res/Æ½¾Ö.png"), 897, 895);
+        putimage(0, 0, &img);
+    }
+    Sleep(1000);
+    return;
+}
+
+bool Game::end_game() {
+    cleardevice();
+    MOUSEMSG msg;
+    IMAGE img;
+    loadimage(&img, _T("res/ÊÇ·ñÖØ¿ª.png"), 897, 895);
+    putimage(0, 0, &img);
+    while (1) {
+        msg = GetMouseMsg();
+        if (msg.uMsg == WM_LBUTTONDOWN) {  // Êó±ê×ó¼ü°´ÏÂ
+            mciSendString("play res/µã»÷ÒôĞ§.mp3", 0, 0, 0);
+            if (msg.x >= 108 && msg.x <= 371 && msg.y >= 467 && msg.y <= 679) {
+                return 1;
+            } else if (msg.x >= 518 && msg.x <= 786 && msg.y >= 467 && msg.y <= 680) {
+                return 0;
+            }
+        }
+    }
 }
