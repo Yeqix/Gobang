@@ -4,11 +4,12 @@
 #include "Chess.h"  
 
 class Game {  
-    Man* man;  
+    Man* man,*man2;  
     AI* ai;  
     Chess* chess; 
+    int mode;
 public:  
-    Game(Man* man, AI* ai, Chess* chess);  
+    Game(Man* man, AI* ai, Chess* chess,Man* man2);  
     void init();  
     void startGame();
 	int chose_mode();
