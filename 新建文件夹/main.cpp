@@ -5,20 +5,20 @@
  #include "AI.h"
  #include "Chess.h"
  #include "Game.h"
+#include <mmsystem.h>
+#pragma comment(lib, "winmm.lib")
 using namespace std;
 signed main() {
-     initgraph(897, 895);
+	 initgraph(897, 1000);//初始化图形窗口
 	 Chess chess;
      Man man ,man2;
      AI ai ;
      Game game(&man,&ai,&chess,&man2) ;
-     while (1) {
-     game.startGame() ;
-     if (game.end_game()) {
-         break; 
+	 while (1) {
+		 game.startGame();
+		 if (game.end_game()) {
+			 break;
+		 }
      }
-     }
-
-     
     return 0;
 }

@@ -14,7 +14,6 @@ void AI::init(Chess* chess, int color)
 }
 void AI::go()
 {
-	Sleep(500);//Ë¼¿¼Ê±¼ä
 	srand(time(0));
 	setScore();
 	int max_score = -1e9;
@@ -37,14 +36,14 @@ void AI::go()
 			}
 		}
 	}
-	chess->chessDown(x, y, color);
+	chess->chessDown(x, y, color,1);
 }
 int rearch(int x, int y, int dx, int dy, Chess* chess, bool& have_other_chess, int color) {
 	int count = 0;
 	while (true) {
 		x += dx;
 		y += dy;
-		if (x < 0 || x >= chess->boardsize() || y < 0 || y >= chess->boardsize()|| chess->getColor(x, y) ==-1 ) break;
+		if (x < 0 || x >= chess->boardsize() || y < 0 || y >= chess->boardsize() || chess->getColor(x, y) == -1)  break;
 		if (chess->getColor(x, y) == color) count++;
 		else {
 			have_other_chess = 1;
@@ -77,7 +76,7 @@ void AI::setScore()
 						score[i][j] += 400000000;
 					}
 					else if (count1 + count2 == 3 && have_other_chess + have_other_chess2 == 0) {
-						score[i][j] += 300000;
+						score[i][j] += 3000000;
 					}
 					else if (count1 + count2 == 3 && have_other_chess + have_other_chess2 == 1) {
 						score[i][j] += 100000;
