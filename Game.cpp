@@ -10,21 +10,21 @@ Game::Game(Man* man, AI* ai, Chess* chess, Man* man2) {
     this->ai = ai;
     this->chess = chess;
     this->man2 = man2;
+    loadimage(&Regret, "res/悔棋.png", 115, 115, 1);
 }
 void Game::startGame() {
     mode = chose_mode();  // 选择模式
-    std::cout << mode << "\n";
+    // std::cout << mode << "\n";
     if (mode) {         // 人机
         chose_color();  // 选择颜色
     } else {
-        man->init(chess, 1);
-        man2->init(chess, 0);
+        man->init(chess, 1, 0);
+        man2->init(chess, 0, 0);
     }
     chose_board();  // 选择棋盘
     chess->init();  // 初始化棋盘，棋子
-    int turn = 1;   // 1代表黑方，0代表白方
     while (1) {
-        if (man->get_color() == turn) {
+        if (man->get_color() == chess->get_turn() % 2) {
             man->go();
         } else {
             if (mode == 1) {
@@ -33,11 +33,17 @@ void Game::startGame() {
             } else {
                 man2->go();
             }
+            for (int i = 0; i < 19; i++) {
+                for (int j = 0; j < 19; j++) {
+                    std::cout << chess->board[j][i] << " ";
+                }
+                std::cout << '\n';
+            }
         }
-        if (chess->gameover(turn)) {
+        if (chess->gameover(chess->get_turn() % 2)) {
             break;
         }
-        turn ^= 1;
+        chess->change_turn();  // 交换回合
     }
     show_winner();
     return;
@@ -77,15 +83,15 @@ void Game::chose_board() {
                 IMAGE img;
                 loadimage(&img, _T("res/13路.jpg"), 897, 895);
                 putimage(0, 0, &img);
+                putimage(0, 895, &Regret);
                 return;
             } else if (msg.x >= 496 && msg.x <= 814 && msg.y >= 660 && msg.y <= 794) {
                 cleardevice();
-
                 chess->set_information(19, 27, 30, 46.5);
-
                 IMAGE img;
                 loadimage(&img, _T("res/19路.jpg"), 897, 895);
                 putimage(0, 0, &img);
+                putimage(0, 895, &Regret);
                 return;
             }
         }
@@ -102,12 +108,12 @@ void Game::chose_color() {
         if (msg.uMsg == WM_LBUTTONDOWN) {  // 鼠标左键按下
             mciSendString("play res/点击音效.mp3", 0, 0, 0);
             if (msg.x >= 210 && msg.x <= 416 && msg.y >= 384 && msg.y <= 523) {  // 选黑
-                man->init(chess, 1);
+                man->init(chess, 1, 1);
                 ai->init(chess, 0);
                 break;
             } else if (msg.x >= 482 && msg.x <= 689 && msg.y >= 384 && msg.y <= 523) {  // 选白
                 ai->init(chess, 1);
-                man->init(chess, 0);
+                man->init(chess, 0, 1);
                 break;
             }
         }

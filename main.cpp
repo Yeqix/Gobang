@@ -1,13 +1,15 @@
 #include <conio.h>
 #include <graphics.h>
+#include <mmsystem.h>
 #include <iostream>
 #include "AI.h"
 #include "Chess.h"
 #include "Game.h"
 #include "Man.h"
+#pragma comment(lib, "winmm.lib")
 using namespace std;
-int main() {
-    initgraph(897, 895);
+signed main() {
+    initgraph(897, 1000);
     Chess chess;
     Man man, man2;
     AI ai;

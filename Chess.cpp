@@ -1,10 +1,11 @@
 #include "Chess.h"
 #include <graphics.h>
-#include <math.h>
 #include <mmsystem.h>
 #include <windows.h>
 #include <iostream>
 #pragma comment(lib, "winmm.lib")
+#include <math.h>
+#include <stack>
 using namespace std;
 void putimagePNG(int x, int y, IMAGE* picture)  // 去除棋子周围黑边
 {
@@ -36,6 +37,7 @@ void putimagePNG(int x, int y, IMAGE* picture)  // 去除棋子周围黑边
     }
 }
 void Chess::init() {
+    turn = 1;  // 先手为黑棋
     mciSendString("play res/start.wav", 0, 0, 0);
     loadimage(&black, "res/black.png", chess_size, chess_size, 1);
     loadimage(&white, "res/white.png", chess_size, chess_size, 1);
@@ -45,7 +47,6 @@ void Chess::init() {
             board[i][j] = -1;
         }
     }
-    is_black = true;
 }
 
 void Chess::set_information(int board_size, int top, int left, double chess_size) {
@@ -53,23 +54,26 @@ void Chess::set_information(int board_size, int top, int left, double chess_size
     this->top = top;
     this->left = left;
     this->chess_size = chess_size;
-    is_black = true;
 }
 
-void Chess::chessDown(int x, int y, int color) {
+void Chess::chessDown(int x, int y, int color, bool sound)  // sound==1时为下棋，==0为悔棋，无需播放音效
+{
     board[x][y] = color;
     int down_x = top + chess_size * x - 0.5 * chess_size;
     int down_y = left + chess_size * y - 0.5 * chess_size;
+    if (sound) {
+        mciSendString("play res/落子声.mp3", 0, 0, 0);
+        stk.push({x, y});
+    }
     if (color == 1) {
         putimagePNG(down_x, down_y, &black);
     } else {
         putimagePNG(down_x, down_y, &white);
     }
-    mciSendString("play res/落子声.mp3", 0, 0, 0);
 }
 
 bool Chess::isvaild(int x, int y, int* down_x, int* down_y) {
-    if (x > 0 && y > 0 && x <= top + (board_size)*chess_size && y <= left + (board_size)*chess_size)  // 判断是否在棋盘内
+    if (x > 0 && y > 0 && x <= top + (board_size - 1) * chess_size && y <= left + (board_size - 1) * chess_size)  // 判断是否在棋盘内
     {
         int x1 = (x - top) / chess_size;
         int y1 = (y - left) / chess_size;
@@ -140,4 +144,52 @@ void Chess::set_win(int winner) {
 
 int Chess::get_win() {
     return win;
+}
+void Chess::delete_chess() {
+    if (!stk.empty()) {
+        board[stk.top().first][stk.top().second] = -1;
+        stk.pop();
+    }
+}
+void Chess::load_map() {
+    IMAGE img;
+    if (board_size == 13) {
+        loadimage(&img, _T("res/13路.jpg"), 897, 895);
+    } else {
+        loadimage(&img, _T("res/19路.jpg"), 897, 895);
+    }
+    putimage(0, 0, &img);
+    for (int i = 0; i < board_size; i++) {
+        for (int j = 0; j < boardsize(); j++) {
+            if (board[i][j] != -1) {
+                chessDown(i, j, board[i][j], 0);  // 画棋子
+            }
+        }
+    }
+}
+void Chess::withdraw(int mode)  // 悔棋
+{
+    if (stk.empty()) {
+        turn--;
+        return;
+    }
+    delete_chess();
+    if (mode == 1) {
+        turn--;
+        if (stk.empty()) {
+            load_map();
+            turn--;
+            return;
+        }
+        delete_chess();
+    }
+    load_map();
+}
+
+void Chess::change_turn() {
+    turn++;
+}
+
+int Chess::get_turn() {
+    return turn;
 }

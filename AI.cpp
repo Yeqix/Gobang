@@ -33,7 +33,7 @@ void AI::go() {
             }
         }
     }
-    chess->chessDown(x, y, color);
+    chess->chessDown(x, y, color, 1);
 }
 int rearch(int x, int y, int dx, int dy, Chess* chess, bool& have_other_chess, int color) {
     int count = 0;
@@ -71,7 +71,7 @@ void AI::setScore() {
                     if (count1 + count2 >= 4) {
                         score[i][j] += 400000000;
                     } else if (count1 + count2 == 3 && have_other_chess + have_other_chess2 == 0) {
-                        score[i][j] += 300000;
+                        score[i][j] += 3000000;
                     } else if (count1 + count2 == 3 && have_other_chess + have_other_chess2 == 1) {
                         score[i][j] += 100000;
                     } else if (count1 + count2 == 2 && have_other_chess + have_other_chess2 == 0) {

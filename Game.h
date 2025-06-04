@@ -8,6 +8,7 @@ class Game {
     AI* ai;  
     Chess* chess; 
     int mode;
+    IMAGE Return,Regret;
 public:  
     Game(Man* man, AI* ai, Chess* chess,Man* man2);  
     void init();  
@@ -17,4 +18,5 @@ public:
 	void chose_color();
     void show_winner();
     bool end_game();
+
 };
