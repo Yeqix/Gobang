@@ -16,14 +16,17 @@ void putimagePNG(int x, int y, IMAGE* picture)  // 去除棋子周围黑边
     int picture_height = picture->getheight();  // 获取picture的高度，EASYX自带
     int graphWidth = getwidth();                // 获取绘图区的宽度，EASYX自带
     int graphHeight = getheight();              // 获取绘图区的高度，EASYX自带
-    int dstX = 0;                               // 在显存里像素的角标
+    int dstX = 0;
     for (int iy = 0; iy < picture_height; iy++) {
         for (int ix = 0; ix < picture_width; ix++) {
             int srcX = ix + iy * picture_width;         // 在显存里像素的角标
             int sa = ((src[srcX] & 0xff000000) >> 24);  // 0xAArrggbb;AA是透明度
-            int sr = ((src[srcX] & 0xff0000) >> 16);    // 获取RGB里的R
-            int sg = ((src[srcX] & 0xff00) >> 8);       // G
-            int sb = src[srcX] & 0xff;                  // B
+            int sr = GetRValue(src[srcX]);              // 获取RGB里的R
+            int sg = GetGValue(src[srcX]);
+            int sb = GetBValue(src[srcX]);
+            // int sr =((src[srcX] & 0xff0000) >> 16);             // 获取RGB里的R
+            // int sg = ((src[srcX] & 0xff00) >> 8);  // G
+            // int sb = src[srcX] & 0xff;             // B
             if (ix >= 0 && ix <= graphWidth && iy >= 0 && iy <= graphHeight && dstX <= graphWidth * graphHeight) {
                 dstX = (ix + x) + (iy + y) * graphWidth;  // 在显存里像素的角标
                 int dr = ((dst[dstX] & 0xff0000) >> 16);
