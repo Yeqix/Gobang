@@ -8,7 +8,7 @@ class Game {
     AI* ai;  
     Chess* chess; 
     int mode;
-    IMAGE Return,Regret;
+    IMAGE Return;
 public:  
     Game(Man* man, AI* ai, Chess* chess,Man* man2);  
     void init();  

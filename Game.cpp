@@ -82,7 +82,6 @@ void Game::chose_board() {
                 IMAGE img;
                 loadimage(&img, _T("res/13·.jpg"), 897, 895);
                 putimage(0, 0, &img);
-                putimage(0, 895, &Regret);
                 return;
             } else if (msg.x >= 496 && msg.x <= 814 && msg.y >= 660 && msg.y <= 794) {
                 cleardevice();
