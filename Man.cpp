@@ -1,31 +1,28 @@
 #include "Man.h"
 #include <graphics.h>
-#include<iostream>
-void Man::init(Chess * chess,int color,int mode) {
-	this->color = color;
-	this->chess = chess;
-	this->mode = mode;
+#include <iostream>
+void Man::init(Chess* chess, int color, int mode) {
+    this->color = color;
+    this->chess = chess;
+    this->mode = mode;
 }
 void Man::go() {
-	MOUSEMSG msg;
-	int x,y;
-	while (1) {
-		msg = GetMouseMsg();
-		if (msg.uMsg == WM_LBUTTONDOWN) {//鼠标左键按下
-			if (chess->isvaild(msg.x, msg.y, & x, & y)) {
-				chess->chessDown(x, y, color, 1);
-				return;
-			}
-			else if (msg.y>897 && msg.x<115) {
-				chess->withdraw(mode);
-				return;
-			}
-		}
-	}
-	
+    MOUSEMSG msg;
+    int x, y;
+    while (1) {
+        msg = GetMouseMsg();
+        if (msg.uMsg == WM_LBUTTONDOWN) {  // 鼠标左键按下
+            if (chess->isvaild(msg.x, msg.y, &x, &y)) {
+                chess->chessDown(x, y, color, 1);
+                return;
+            }
+        } else if (msg.uMsg == WM_RBUTTONDOWN) {
+            chess->withdraw(mode);
+            return;
+        }
+    }
 }
 
-int Man::get_color()
-{
-	return color;
+int Man::get_color() {
+    return color;
 }

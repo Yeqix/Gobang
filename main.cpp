@@ -9,7 +9,7 @@
 #pragma comment(lib, "winmm.lib")
 using namespace std;
 signed main() {
-    initgraph(897, 1000);
+    initgraph(897, 895);
     Chess chess;
     Man man, man2;
     AI ai;
