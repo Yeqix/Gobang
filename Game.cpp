@@ -32,12 +32,6 @@ void Game::startGame() {
             } else {
                 man2->go();
             }
-            for (int i = 0; i < 19; i++) {
-                for (int j = 0; j < 19; j++) {
-                    std::cout << chess->board[j][i] << " ";
-                }
-                std::cout << '\n';
-            }
         }
         if (chess->gameover(chess->get_turn() % 2)) {
             break;

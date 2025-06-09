@@ -73,20 +73,10 @@ void Chess::chessDown(int x, int y, int color, bool sound)  // sound==1Ê±ÎªÏÂÆå£
 }
 
 bool Chess::isvaild(int x, int y, int* down_x, int* down_y) {
-    if (x > 0 && y > 0 && x <= top + (board_size - 1) * chess_size && y <= left + (board_size - 1) * chess_size)  // ÅÐ¶ÏÊÇ·ñÔÚÆåÅÌÄÚ
+    if (x > 0 && y > 0 && x <= top + (board_size)*chess_size && y <= left + (board_size)*chess_size)  // ÅÐ¶ÏÊÇ·ñÔÚÆåÅÌÄÚ
     {
-        int x1 = (x - top) / chess_size;
-        int y1 = (y - left) / chess_size;
-        if (x1 * chess_size + chess_size / 2 + top < x) {
-            *down_x = x1 + 1;
-        } else {
-            *down_x = x1;
-        }
-        if (y1 * chess_size + chess_size / 2 + left < y) {
-            *down_y = y1 + 1;
-        } else {
-            *down_y = y1;
-        }
+        *down_x = (x - top + chess_size / 2) / chess_size;
+        *down_y = (y - left + chess_size / 2) / chess_size;
         if (board[*down_x][*down_y] == -1) {
             return true;
         } else {

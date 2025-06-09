@@ -52,7 +52,7 @@ int rearch(int x, int y, int dx, int dy, Chess* chess, bool& have_other_chess, i
     return count;
 }
 int dx[8] = {1, -1, 0, 0, 1, -1, -1, 1};
-int dy[8] = {0, 0, 1, -1, 1, -1, 1, -1};  // 8个方向，两两成对
+int dy[8] = {0, 0, 1, -1, 1, -1, 1, -1};
 void AI::setScore() {
     for (int i = 0; i < chess->boardsize(); i++) {
         for (int j = 0; j < chess->boardsize(); j++) {
