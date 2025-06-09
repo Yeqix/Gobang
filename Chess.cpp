@@ -7,6 +7,7 @@
 #include <math.h>
 #include <stack>
 using namespace std;
+
 void putimagePNG(int x, int y, IMAGE *picture) // 去除棋子周围黑边
 {
     DWORD *dst = GetImageBuffer(); // GetImageBuffer()函数，用于获取绘图设备的显存指针，EASYX自带
@@ -42,6 +43,7 @@ void putimagePNG(int x, int y, IMAGE *picture) // 去除棋子周围黑边
         }
     }
 }
+
 void Chess::init()
 {
     turn = 1; // 先手为黑棋
@@ -107,12 +109,15 @@ int Chess::boardsize()
 {
     return board_size;
 }
+
 int Chess::getColor(int x, int y)
 {
     return board[x][y];
 }
+
 int dxx[4] = {0, 1, 1, 1};
 int dyy[4] = {1, 0, 1, -1};
+
 bool Chess::gameover(int color)
 {
     bool _continue = 0; // 是否还有位置下
@@ -167,6 +172,7 @@ int Chess::get_win()
 {
     return win;
 }
+
 void Chess::delete_chess()
 {
     if (!stk.empty())
@@ -175,6 +181,7 @@ void Chess::delete_chess()
         stk.pop();
     }
 }
+
 void Chess::load_map()
 {
     IMAGE img;
@@ -198,6 +205,7 @@ void Chess::load_map()
         }
     }
 }
+
 void Chess::withdraw(int mode) // 悔棋
 {
     if (stk.empty())
