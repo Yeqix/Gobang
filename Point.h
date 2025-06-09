@@ -1,6 +1,7 @@
 #ifndef POINT_H
 #define POINT_H
-class Point {
+class Point
+{
 public:
     Point();
     Point(int a, int b);
