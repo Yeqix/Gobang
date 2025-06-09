@@ -10,7 +10,6 @@ Game::Game(Man* man, AI* ai, Chess* chess, Man* man2) {
     this->ai = ai;
     this->chess = chess;
     this->man2 = man2;
-    loadimage(&Regret, "res/»ÚÆå.png", 115, 115, 1);
 }
 void Game::startGame() {
     mode = chose_mode();  // Ñ¡ÔñÄ£Ê½
