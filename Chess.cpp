@@ -62,7 +62,7 @@ void Chess::chessDown(int x, int y, int color, bool sound)  // sound==1Ê±ÎªÏÂÆå£
     int down_x = top + chess_size * x - 0.5 * chess_size;
     int down_y = left + chess_size * y - 0.5 * chess_size;
     if (sound) {
-        mciSendString("play res/Âä×ÓÉù.mp3", 0, 0, 0);
+        mciSendString("play res/Âä×ÓÉù.mp3", 0, 0, 0);  // ÒôĞ§
         stk.push({x, y});
     }
     if (color == 1) {

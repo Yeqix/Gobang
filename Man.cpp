@@ -11,7 +11,7 @@ void Man::go() {
     int x, y;
     while (1) {
         msg = GetMouseMsg();
-        if (msg.uMsg == WM_LBUTTONDOWN) {  // Êó±ê×ó¼ü°´ÏÂ
+        if (msg.uMsg == WM_LBUTTONDOWN) {
             if (chess->isvaild(msg.x, msg.y, &x, &y)) {
                 chess->chessDown(x, y, color, 1);
                 return;
