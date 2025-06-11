@@ -1,8 +1,10 @@
 #include "Chess.h"
+#include "Game.h"
 #include <graphics.h>
 #include <mmsystem.h>
 #include <windows.h>
 #include <iostream>
+#include <fstream>
 #pragma comment(lib, "winmm.lib")
 #include <math.h>
 #include <stack>
@@ -236,4 +238,67 @@ void Chess::change_turn()
 int Chess::get_turn()
 {
     return turn;
+}
+
+int Chess::menu()
+{
+    IMAGE img;
+    loadimage(&img, _T("res/²Ëµ¥À¸.png"), 897, 895);
+    putimage(0, 0, &img);
+    MOUSEMSG msg;
+    while (1)
+    {
+        msg = GetMouseMsg();
+        if (msg.uMsg == WM_LBUTTONDOWN)
+        {
+            if (msg.x >= 500 && msg.x <= 741 && msg.y >= 349 && msg.y <= 434)
+            {
+                return 1;
+            }
+            else if (msg.x >= 500 && msg.x <= 741 && msg.y >= 489 && msg.y <= 571)
+            {
+                return -1;
+            }
+            else if (msg.x >= 500 && msg.x <= 741 && msg.y >= 627 && msg.y <= 710)
+            {
+                turn++;
+                load_map();
+                return 0;
+            }
+        }
+    }
+}
+
+void Chess::record()
+{
+    ofstream ofs;
+    ofs.open("res/file.txt");
+    ofs << turn << "\n";
+    ofs << board_size << "\n";
+    for (int i = 0; i < board_size; i++)
+    {
+        for (int j = 0; j < board_size; j++)
+        {
+            ofs << board[i][j] << " ";
+        }
+        ofs << "\n";
+    }
+    load_map();
+    return;
+}
+
+void Chess::load_game()
+{
+    ifstream ifs("res/file.txt");
+    cout << turn << '\n';
+    ifs >> turn;
+    ifs >> board_size;
+    for (int i = 0; i < board_size; i++)
+    {
+        for (int j = 0; j < board_size; j++)
+        {
+            ifs >> board[i][j];
+        }
+    }
+    return;
 }

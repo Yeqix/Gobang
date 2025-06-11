@@ -5,6 +5,7 @@
 
 class Game
 {
+private:
     Man *man, *man2;
     AI *ai;
     Chess *chess;
@@ -13,6 +14,7 @@ class Game
 
 public:
     Game(Man *man, AI *ai, Chess *chess, Man *man2);
+    ~Game();
     void init();
     void startGame();
     int chose_mode();

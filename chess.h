@@ -24,6 +24,9 @@ public:
     void withdraw(int mode);
     void change_turn();
     int get_turn();
+    int menu();
+    void record();
+    void load_game();
     void delete_chess();      // 删除棋子
     bool gameover(int color); // 返回结果
     void set_win(int winner); // 设置胜利者

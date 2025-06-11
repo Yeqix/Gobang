@@ -16,22 +16,29 @@ void Game::startGame()
 {
     mode = chose_mode(); // 选择模式
     // std::cout << mode << "\n";
-    if (mode)
-    {                  // 人机
-        chose_color(); // 选择颜色
+    if (mode == 1)
+    {
+        chose_color();
+        chose_board(); // 选择棋盘
+        chess->init(); // 初始化棋盘，棋子
     }
-    else
+    else if (mode == 0)
     {
         man->init(chess, 1, 0);
         man2->init(chess, 0, 0);
+        chose_board(); // 选择棋盘
+        chess->init(); // 初始化棋盘，棋子
     }
-    chose_board(); // 选择棋盘
-    chess->init(); // 初始化棋盘，棋子
+    else if (mode == 3)
+    {
+        chess->load_map();
+    }
     while (1)
     {
+        int state = 0;
         if (man->get_color() == chess->get_turn() % 2)
         {
-            man->go();
+            state = man->go();
         }
         else
         {
@@ -42,8 +49,16 @@ void Game::startGame()
             }
             else
             {
-                man2->go();
+                state = man2->go();
             }
+        }
+        if (state == -1)
+        {
+            return;
+        }
+        else if (state == 1)
+        {
+            chess->record();
         }
         if (chess->gameover(chess->get_turn() % 2))
         {
@@ -57,9 +72,10 @@ void Game::startGame()
 int Game::chose_mode()
 {
     IMAGE img;
-    loadimage(&img, _T("res/选模式.jpg"), 897, 895);
+    loadimage(&img, _T("res/选模式.png"), 897, 895);
     putimage(0, 0, &img);
     MOUSEMSG msg;
+    int state;
     while (1)
     {
         msg = GetMouseMsg();
@@ -75,6 +91,11 @@ int Game::chose_mode()
             {
                 cleardevice(); // 清屏
                 return 0;      // 人人
+            }
+            else if (msg.x >= 713 && msg.x <= 874 && msg.y >= 58 && msg.y <= 106)
+            {
+                chess->load_game();
+                return 3;
             }
         }
     }
@@ -192,4 +213,12 @@ bool Game::end_game()
             }
         }
     }
+}
+
+Game::~Game()
+{
+    man = nullptr;
+    man2 = nullptr;
+    ai = nullptr;
+    chess = nullptr;
 }
