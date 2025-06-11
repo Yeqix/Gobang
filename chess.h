@@ -1,6 +1,6 @@
 #pragma once
 #include <graphics.h>
-#include <stack>
+#include <vector>
 
 #include "Point.h"
 using namespace std;
@@ -8,7 +8,7 @@ class Chess : public Point
 {
 private:
     int board[19][19];
-    stack<pair<int, int>> stk; // 用于存储撤销的棋子
+    vector<pair<int, int>> stk; // 用于存储撤销的棋子
     int top, left, board_size; // 棋盘的边界(留白部分)，棋盘大小
     double chess_size;
     int turn;           // 记录棋子数量
@@ -24,6 +24,9 @@ public:
     void withdraw(int mode);
     void change_turn();
     int get_turn();
+    int menu();
+    void record();
+    void load_game();
     void delete_chess();      // 删除棋子
     bool gameover(int color); // 返回结果
     void set_win(int winner); // 设置胜利者
