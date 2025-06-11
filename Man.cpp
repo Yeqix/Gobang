@@ -7,7 +7,7 @@ void Man::init(Chess *chess, int color, int mode)
     this->chess = chess;
     this->mode = mode;
 }
-int Man::go()
+void Man::go()
 {
     MOUSEMSG msg;
     int x, y;
@@ -19,17 +19,13 @@ int Man::go()
             if (chess->isvaild(msg.x, msg.y, &x, &y))
             {
                 chess->chessDown(x, y, color, 1);
-                return 0;
+                return;
             }
         }
         else if (msg.uMsg == WM_RBUTTONDOWN)
         {
             chess->withdraw(mode);
-            return 0;
-        }
-        else if (msg.uMsg == WM_MBUTTONDOWN)
-        {
-            return chess->menu();
+            return;
         }
     }
 }

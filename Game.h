@@ -5,19 +5,17 @@
 
 class Game
 {
-private:
     Man *man, *man2;
     AI *ai;
     Chess *chess;
-    pair<int, int> mode;
+    int mode;
     IMAGE Return;
 
 public:
     Game(Man *man, AI *ai, Chess *chess, Man *man2);
-    ~Game();
     void init();
     void startGame();
-    void chose_mode();
+    int chose_mode();
     void chose_board();
     void chose_color();
     void show_winner();

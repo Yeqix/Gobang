@@ -8,6 +8,6 @@ class Man
 
 public:
     void init(Chess *chess, int color, int mode);
-    int go();
+    void go();
     int get_color();
 };

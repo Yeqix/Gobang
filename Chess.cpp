@@ -1,13 +1,11 @@
 #include "Chess.h"
-#include "Game.h"
 #include <graphics.h>
 #include <mmsystem.h>
 #include <windows.h>
 #include <iostream>
-#include <fstream>
 #pragma comment(lib, "winmm.lib")
 #include <math.h>
-#include <vector>
+#include <stack>
 using namespace std;
 
 void putimagePNG(int x, int y, IMAGE *picture) // 去除棋子周围黑边
@@ -49,6 +47,9 @@ void putimagePNG(int x, int y, IMAGE *picture) // 去除棋子周围黑边
 void Chess::init()
 {
     turn = 1; // 先手为黑棋
+    mciSendString("play res/start.wav", 0, 0, 0);
+    loadimage(&black, "res/black.png", chess_size, chess_size, 1);
+    loadimage(&white, "res/white.png", chess_size, chess_size, 1);
     for (int i = 0; i < board_size; i++) // 清空棋盘
     {
         for (int j = 0; j < board_size; j++)
@@ -60,9 +61,6 @@ void Chess::init()
 
 void Chess::set_information(int board_size, int top, int left, double chess_size)
 {
-    mciSendString("play res/start.wav", 0, 0, 0);
-    loadimage(&black, "res/black.png", chess_size, chess_size, 1);
-    loadimage(&white, "res/white.png", chess_size, chess_size, 1);
     this->board_size = board_size;
     this->top = top;
     this->left = left;
@@ -77,8 +75,7 @@ void Chess::chessDown(int x, int y, int color, bool sound) // sound==1时为下棋，
     if (sound)
     {
         mciSendString("play res/落子声.mp3", 0, 0, 0); // 音效
-        stk.push_back({x, y});
-        turn ^= 1;
+        stk.push({x, y});
     }
     if (color == 1)
     {
@@ -178,11 +175,10 @@ int Chess::get_win()
 
 void Chess::delete_chess()
 {
-    turn ^= 1;
     if (!stk.empty())
     {
-        board[stk.back().first][stk.back().second] = -1;
-        stk.pop_back();
+        board[stk.top().first][stk.top().second] = -1;
+        stk.pop();
     }
 }
 
@@ -210,22 +206,21 @@ void Chess::load_map()
     }
 }
 
-
 void Chess::withdraw(int mode) // 悔棋
 {
     if (stk.empty())
     {
-        //turn ^= 1;
+        turn--;
         return;
     }
     delete_chess();
     if (mode == 1)
     {
-        //turn ^= 1;
+        turn--;
         if (stk.empty())
         {
             load_map();
-
+            turn--;
             return;
         }
         delete_chess();
@@ -235,92 +230,10 @@ void Chess::withdraw(int mode) // 悔棋
 
 void Chess::change_turn()
 {
-    turn ^= 1;
+    turn++;
 }
 
 int Chess::get_turn()
 {
     return turn;
-}
-
-int Chess::menu()
-{
-    IMAGE img;
-    loadimage(&img, _T("res/菜单栏.png"), 897, 895);
-    putimage(0, 0, &img);
-    MOUSEMSG msg;
-    while (1)
-    {
-        msg = GetMouseMsg();
-        if (msg.uMsg == WM_LBUTTONDOWN)
-        {
-            if (msg.x >= 500 && msg.x <= 741 && msg.y >= 349 && msg.y <= 434)
-            {
-                return 1;
-            }
-            else if (msg.x >= 500 && msg.x <= 741 && msg.y >= 489 && msg.y <= 571)
-            {
-                return -1;
-            }
-            else if (msg.x >= 500 && msg.x <= 741 && msg.y >= 627 && msg.y <= 710)
-            {
-                load_map();
-                return 0;
-            }
-        }
-    }
-}
-
-void Chess::record()
-{
-    ofstream ofs;
-    if (board_size == 13) {
-        ofs.open("res/date13.txt");
-    }
-    else {
-        ofs.open("res/date19.txt");
-    }
-    ofs << turn << "\n";
-    ofs << board_size << "\n";
-    for (int i = 0; i < board_size; i++)
-    {
-        for (int j = 0; j < board_size; j++)
-        {
-            ofs << board[i][j] << " ";
-        }
-        ofs << "\n";
-    }
-    for(int i = 0; i < stk.size(); i++)
-    {
-        ofs << stk[i].first << " " << stk[i].second << "\n";
-	}
-    load_map();
-    ofs.close();
-    return;
-}
-
-void Chess::load_game()
-{
-    ifstream ifs;
-    if (board_size == 13) {
-       ifs.open("res/date13.txt");
-    }
-    else {
-        ifs.open("res/date19.txt");
-    }
-    ifs >> turn;
-    ifs >> board_size;
-    for (int i = 0; i < board_size; i++)
-    {
-        for (int j = 0; j < board_size; j++)
-        {
-            ifs >> board[i][j];
-        }
-    }
-    int a, b;
-    while (ifs >> a >> b) {
-		stk.push_back({ a, b });
-    }
-    ifs.close(); 
-    return;
 }
