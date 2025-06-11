@@ -7,7 +7,7 @@
 #include <fstream>
 #pragma comment(lib, "winmm.lib")
 #include <math.h>
-#include <stack>
+#include <vector>
 using namespace std;
 
 void putimagePNG(int x, int y, IMAGE *picture) // 去除棋子周围黑边
@@ -48,10 +48,7 @@ void putimagePNG(int x, int y, IMAGE *picture) // 去除棋子周围黑边
 
 void Chess::init()
 {
-    //turn = 1; // 先手为黑棋
-    //mciSendString("play res/start.wav", 0, 0, 0);
-    //loadimage(&black, "res/black.png", chess_size, chess_size, 1);
-    //loadimage(&white, "res/white.png", chess_size, chess_size, 1);
+    turn = 1; // 先手为黑棋
     for (int i = 0; i < board_size; i++) // 清空棋盘
     {
         for (int j = 0; j < board_size; j++)
@@ -63,7 +60,6 @@ void Chess::init()
 
 void Chess::set_information(int board_size, int top, int left, double chess_size)
 {
-    turn = 1; // 先手为黑棋
     mciSendString("play res/start.wav", 0, 0, 0);
     loadimage(&black, "res/black.png", chess_size, chess_size, 1);
     loadimage(&white, "res/white.png", chess_size, chess_size, 1);
@@ -81,7 +77,7 @@ void Chess::chessDown(int x, int y, int color, bool sound) // sound==1时为下棋，
     if (sound)
     {
         mciSendString("play res/落子声.mp3", 0, 0, 0); // 音效
-        stk.push({x, y});
+        stk.push_back({x, y});
         turn ^= 1;
     }
     if (color == 1)
@@ -185,8 +181,8 @@ void Chess::delete_chess()
     turn ^= 1;
     if (!stk.empty())
     {
-        board[stk.top().first][stk.top().second] = -1;
-        stk.pop();
+        board[stk.back().first][stk.back().second] = -1;
+        stk.pop_back();
     }
 }
 
@@ -213,6 +209,7 @@ void Chess::load_map()
         }
     }
 }
+
 
 void Chess::withdraw(int mode) // 悔棋
 {
@@ -293,7 +290,12 @@ void Chess::record()
         }
         ofs << "\n";
     }
+    for(int i = 0; i < stk.size(); i++)
+    {
+        ofs << stk[i].first << " " << stk[i].second << "\n";
+	}
     load_map();
+    ofs.close();
     return;
 }
 
@@ -315,5 +317,10 @@ void Chess::load_game()
             ifs >> board[i][j];
         }
     }
+    int a, b;
+    while (ifs >> a >> b) {
+		stk.push_back({ a, b });
+    }
+    ifs.close(); 
     return;
 }

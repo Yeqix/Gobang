@@ -119,18 +119,12 @@ void Game::chose_board()
             {
                 cleardevice();
                 chess->set_information(13, 44, 44, 67);
-                // IMAGE img;
-                // loadimage(&img, _T("res/13·.jpg"), 897, 895);
-                // putimage(0, 0, &img);
                 return;
             }
             else if (msg.x >= 496 && msg.x <= 814 && msg.y >= 660 && msg.y <= 794)
             {
                 cleardevice();
                 chess->set_information(19, 27, 30, 46.5);
-                // IMAGE img;
-                // loadimage(&img, _T("res/19·.jpg"), 897, 895);
-                // putimage(0, 0, &img);
                 return;
             }
         }
