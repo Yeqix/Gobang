@@ -23,6 +23,7 @@ void Game::startGame()
     }
     else
     {
+        chose_board();
         mode.second = 0;
     }
     if (mode.first)
