@@ -9,7 +9,7 @@ private:
     Man *man, *man2;
     AI *ai;
     Chess *chess;
-    int mode;
+    pair<int, int> mode;
     IMAGE Return;
 
 public:
@@ -17,7 +17,7 @@ public:
     ~Game();
     void init();
     void startGame();
-    int chose_mode();
+    void chose_mode();
     void chose_board();
     void chose_color();
     void show_winner();

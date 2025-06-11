@@ -78,6 +78,7 @@ void Chess::chessDown(int x, int y, int color, bool sound) // sound==1Ê±ÎªÏÂÆå£¬
     {
         mciSendString("play res/Âä×ÓÉù.mp3", 0, 0, 0); // ÒôÐ§
         stk.push({x, y});
+        turn ^= 1;
     }
     if (color == 1)
     {
@@ -212,17 +213,17 @@ void Chess::withdraw(int mode) // »ÚÆå
 {
     if (stk.empty())
     {
-        turn--;
+        turn ^= 1;
         return;
     }
     delete_chess();
     if (mode == 1)
     {
-        turn--;
+        turn ^= 1;
         if (stk.empty())
         {
             load_map();
-            turn--;
+            turn ^= 1;
             return;
         }
         delete_chess();
@@ -232,7 +233,7 @@ void Chess::withdraw(int mode) // »ÚÆå
 
 void Chess::change_turn()
 {
-    turn++;
+    turn ^= 1;
 }
 
 int Chess::get_turn()
@@ -261,7 +262,6 @@ int Chess::menu()
             }
             else if (msg.x >= 500 && msg.x <= 741 && msg.y >= 627 && msg.y <= 710)
             {
-                turn++;
                 load_map();
                 return 0;
             }
@@ -290,7 +290,6 @@ void Chess::record()
 void Chess::load_game()
 {
     ifstream ifs("res/file.txt");
-    cout << turn << '\n';
     ifs >> turn;
     ifs >> board_size;
     for (int i = 0; i < board_size; i++)

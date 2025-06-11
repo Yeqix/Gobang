@@ -14,35 +14,37 @@ Game::Game(Man *man, AI *ai, Chess *chess, Man *man2)
 }
 void Game::startGame()
 {
-    mode = chose_mode(); // 选择模式
+    chose_mode(); // 选择模式
     // std::cout << mode << "\n";
-    if (mode == 1)
+    if (mode.second == 0)
+    {
+        chose_board();
+        chess->init();
+    }
+    else
+    {
+        mode.second = 0;
+    }
+    if (mode.first)
     {
         chose_color();
-        chose_board(); // 选择棋盘
-        chess->init(); // 初始化棋盘，棋子
     }
-    else if (mode == 0)
+    else
     {
         man->init(chess, 1, 0);
         man2->init(chess, 0, 0);
-        chose_board(); // 选择棋盘
-        chess->init(); // 初始化棋盘，棋子
     }
-    else if (mode == 3)
-    {
-        chess->load_map();
-    }
+    chess->load_map();
     while (1)
     {
         int state = 0;
-        if (man->get_color() == chess->get_turn() % 2)
+        if (man->get_color() == chess->get_turn())
         {
             state = man->go();
         }
         else
         {
-            if (mode == 1)
+            if (mode.first)
             {
                 Sleep(1000);
                 ai->go();
@@ -60,22 +62,20 @@ void Game::startGame()
         {
             chess->record();
         }
-        if (chess->gameover(chess->get_turn() % 2))
+        if (chess->gameover(chess->get_turn()))
         {
             break;
         }
-        chess->change_turn(); // 交换回合
     }
     show_winner();
     return;
 }
-int Game::chose_mode()
+void Game::chose_mode()
 {
     IMAGE img;
     loadimage(&img, _T("res/选模式.png"), 897, 895);
     putimage(0, 0, &img);
     MOUSEMSG msg;
-    int state;
     while (1)
     {
         msg = GetMouseMsg();
@@ -84,22 +84,23 @@ int Game::chose_mode()
             mciSendString("play res/点击音效.mp3", 0, 0, 0);
             if (msg.x >= 56 && msg.x <= 395 && msg.y >= 740 && msg.y <= 846)
             {
-                cleardevice(); // 清屏
-                return 1;      // 人机
+                cleardevice();  // 清屏
+                mode.first = 1; // 人机
+                return;
             }
             else if (msg.x >= 506 && msg.x <= 847 && msg.y >= 740 && msg.y <= 846)
             {
-                cleardevice(); // 清屏
-                return 0;      // 人人
+                cleardevice();  // 清屏
+                mode.first = 0; // 人人
+                return;
             }
             else if (msg.x >= 713 && msg.x <= 874 && msg.y >= 58 && msg.y <= 106)
             {
                 chess->load_game();
-                return 3;
+                mode.second = 1;
             }
         }
     }
-    return 0;
 }
 void Game::chose_board()
 {
@@ -117,18 +118,18 @@ void Game::chose_board()
             {
                 cleardevice();
                 chess->set_information(13, 44, 44, 67);
-                IMAGE img;
-                loadimage(&img, _T("res/13路.jpg"), 897, 895);
-                putimage(0, 0, &img);
+                // IMAGE img;
+                // loadimage(&img, _T("res/13路.jpg"), 897, 895);
+                // putimage(0, 0, &img);
                 return;
             }
             else if (msg.x >= 496 && msg.x <= 814 && msg.y >= 660 && msg.y <= 794)
             {
                 cleardevice();
                 chess->set_information(19, 27, 30, 46.5);
-                IMAGE img;
-                loadimage(&img, _T("res/19路.jpg"), 897, 895);
-                putimage(0, 0, &img);
+                // IMAGE img;
+                // loadimage(&img, _T("res/19路.jpg"), 897, 895);
+                // putimage(0, 0, &img);
                 return;
             }
         }
