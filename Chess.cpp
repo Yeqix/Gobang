@@ -48,7 +48,7 @@ void putimagePNG(int x, int y, IMAGE *picture) // 去除棋子周围黑边
 
 void Chess::init()
 {
-    turn = 1;                            // 先手为黑棋
+    turn = 1; // 先手为黑棋
     for (int i = 0; i < board_size; i++) // 清空棋盘
     {
         for (int j = 0; j < board_size; j++)
@@ -151,7 +151,7 @@ bool Chess::gameover(int color)
                     }
                     if (cnt >= 5)
                     {
-                        stk.clear(); // 清空悔棋栈
+						stk.clear(); // 清空悔棋栈
                         set_win(color);
                         return true;
                     }
@@ -211,17 +211,18 @@ void Chess::load_map()
     }
 }
 
+
 void Chess::withdraw(int mode) // 悔棋
 {
     if (stk.empty())
     {
-        // turn ^= 1;
+        //turn ^= 1;
         return;
     }
     delete_chess();
     if (mode == 1)
     {
-        // turn ^= 1;
+        //turn ^= 1;
         if (stk.empty())
         {
             load_map();
@@ -273,13 +274,13 @@ int Chess::menu()
 
 void Chess::record()
 {
+    HWND hnd = GetHWnd();
+    MessageBox(hnd, "保存成功！", "提示", MB_OK);
     ofstream ofs;
-    if (board_size == 13)
-    {
+    if (board_size == 13) {
         ofs.open("res/date13.txt");
     }
-    else
-    {
+    else {
         ofs.open("res/date19.txt");
     }
     ofs << turn << "\n";
@@ -292,10 +293,10 @@ void Chess::record()
         }
         ofs << "\n";
     }
-    for (int i = 0; i < stk.size(); i++)
+    for(int i = 0; i < stk.size(); i++)
     {
         ofs << stk[i].first << " " << stk[i].second << "\n";
-    }
+	}
     load_map();
     ofs.close();
     return;
@@ -303,13 +304,12 @@ void Chess::record()
 
 void Chess::load_game()
 {
+
     ifstream ifs;
-    if (board_size == 13)
-    {
-        ifs.open("res/date13.txt");
+    if (board_size == 13) {
+       ifs.open("res/date13.txt");
     }
-    else
-    {
+    else {
         ifs.open("res/date19.txt");
     }
     ifs >> turn;
@@ -322,10 +322,9 @@ void Chess::load_game()
         }
     }
     int a, b;
-    while (ifs >> a >> b)
-    {
-        stk.push_back({a, b});
+    while (ifs >> a >> b) {
+		stk.push_back({ a, b });
     }
-    ifs.close();
+    ifs.close(); 
     return;
 }
